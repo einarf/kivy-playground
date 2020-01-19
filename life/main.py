@@ -13,13 +13,12 @@ from kivy.graphics.transformation import Matrix
 from kivy.graphics.opengl import *
 from kivy.graphics import *
 
-WINDOW_SIZE = 512, 512
-FBO_SIZE = 256, 256
+WINDOW_SIZE = 640, 640
+FBO_SIZE = 320, 320
 FPS = 20
 
 class Renderer(Widget):
     def __init__(self, **kwargs):
-        # self.canvas = RenderContext(with_depth=False)
         super(Renderer, self).__init__(**kwargs)
         self.shader_path = resource_find('life_colors.glsl')
         # self.shader_path = resource_find('life.glsl')
@@ -45,7 +44,7 @@ class Renderer(Widget):
         self.fbo2.add_reload_observer(self.populate_fbo_2)
         self.generate_initial_data(self.fbo1)
 
-        # Instruction groups for odd and even frames
+        # Create two framebuffer we transform between
         self.fbo1.add(BindTexture(texture=self.fbo2.texture, index=1))
         self.fbo1.add(self.quad)
 
@@ -55,7 +54,7 @@ class Renderer(Widget):
         # Render to fbo2 in the first frame
         self.fbo = self.fbo2
 
-        # Widget instructions
+        # Instruction groups for odd and even frames
         self.group1 = InstructionGroup()
         self.group1.add(Rectangle(size=WINDOW_SIZE, texture=self.fbo2.texture))
 
